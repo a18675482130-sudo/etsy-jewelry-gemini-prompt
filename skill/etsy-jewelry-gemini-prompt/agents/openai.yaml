@@ -1,0 +1,4 @@
+interface:
+  display_name: "Etsy 珠宝 Gemini 提示词"
+  short_description: "为 Etsy 珠宝商品生成、诊断并迭代优化 Gemini 摄影提示词"
+  default_prompt: "使用 $etsy-jewelry-gemini-prompt 根据产品参考图生成一版简短的珠宝摄影提示词。"
