@@ -1,5 +1,9 @@
 # Etsy Jewelry Gemini Prompt
 
+[中文](#中文说明) · [English](#english)
+
+## 中文说明
+
 面向珠宝商品摄影的 Codex Skill，用于为 Gemini 图像模型编写、诊断和迭代优化可执行提示词。
 
 它将产品结构、佩戴比例与摄影风格拆分为独立参考来源，降低参考图互相污染、首饰结构漂移和人体细节失真的概率。适用于 Etsy 商品主图、佩戴图和生活方式摄影提示词工作流。
@@ -138,3 +142,128 @@ skill/etsy-jewelry-gemini-prompt/
 [MIT License](LICENSE)
 
 本项目与 Etsy、Google 或 Gemini 官方无隶属、合作或背书关系。相关名称仅用于说明适用场景和兼容工作流。
+
+---
+
+## English
+
+A Codex Skill for authoring, diagnosing, and iteratively refining production-ready Gemini prompts for jewelry product photography.
+
+It separates product identity, wearing scale, and photographic style into independent reference roles. This reduces cross-reference contamination, structural drift, and anatomical artifacts across Etsy listing images, on-body shots, and lifestyle photography workflows.
+
+> This Skill outputs text prompts, diagnostics, and revision guidance only. It does not invoke image-generation tools.
+
+### Core capabilities
+
+#### Reference-role isolation
+
+- Product reference: design, materials, gemstones, metalwork, findings, and relative dimensions
+- Wearing reference: visual scale, placement, pose, and composition
+- Style reference: skin rendering, lighting, color, and photographic finish
+- No reference may override the responsibilities of another
+
+#### Product-fidelity control
+
+- Locks silhouette, gemstone count, orientation, and connection structure
+- Preserves chains, bangles, ring shanks, earring findings, and stone settings
+- Suppresses mirroring, occlusion, scale drift, automatic stacking, and redesign
+
+#### Category-specific constraints
+
+| Category | Primary controls |
+|---|---|
+| Necklaces and pendants | Pendant structure, chain length and thickness, collarbone placement, neck crop |
+| Bracelets and bangles | Links, openings, clasps, natural wrist fit, wrist anatomy |
+| Earrings and studs | Quantity, left/right orientation, findings, drop length, hair occlusion |
+| Rings | Face orientation, shank, prongs, worn finger, natural fit |
+
+#### Iterative diagnosis
+
+Reviews generated results in a fixed order: product structure, wearing scale, anatomical crop, skin, depth of field, gemstone highlights, and synthetic artifacts. Each iteration corrects only the 1–3 highest-impact issues while preserving stable elements.
+
+### Input protocol
+
+Provide either a product reference image or a complete product specification. All other inputs are optional.
+
+| Input | Requirement | Purpose |
+|---|---|---|
+| Product reference image | Required unless specifications are supplied | Structure, materials, gemstones, findings, visible proportions |
+| Complete product specification | Required unless a product image is supplied | Type, millimeter dimensions, materials, plating, gemstones, connections |
+| Wearing-scale reference | Optional | Placement, visual scale, pose, composition |
+| Photography-style reference | Optional | Skin tone, lighting, color, photographic finish |
+
+Without a wearing reference, the Skill does not invent exact chain lengths, ring sizes, or drop measurements. Without a style reference or explicit direction, it defaults to warm, low-key jewelry photography.
+
+### Installation
+
+Download the latest ZIP from [Releases](https://github.com/a18675482130-sudo/etsy-jewelry-gemini-prompt/releases/latest). Extract it and copy:
+
+```text
+skill/etsy-jewelry-gemini-prompt
+```
+
+to your Codex Skills directory:
+
+```text
+%USERPROFILE%\.codex\skills\etsy-jewelry-gemini-prompt
+```
+
+Reopen the Codex task before invoking the Skill.
+
+### Quick start
+
+#### Single product reference
+
+```text
+Use $etsy-jewelry-gemini-prompt to create a short prompt from the product reference.
+Category: ring. Style: warm, low-key, single-hand presentation, 1:1.
+Preserve the ring face, prongs, gemstone count, and shank width. Do not add stacked jewelry.
+```
+
+#### Three-reference workflow
+
+```text
+Use $etsy-jewelry-gemini-prompt to create a complete prompt.
+Image 1 controls product structure only.
+Image 2 controls wearing scale and composition only.
+Image 3 controls skin, lighting, and photographic finish only.
+```
+
+#### Diagnose a generated result
+
+```text
+Use $etsy-jewelry-gemini-prompt to analyze this generated result.
+Confirm visible facts first, identify only the three highest-impact issues,
+then provide replacement copy that corrects those issues without changing stable elements.
+```
+
+### Output modes
+
+| Command | Output |
+|---|---|
+| `keywords` | 20–40 copy-ready keywords |
+| `short` or `1` | A concise prompt with relevant negative constraints |
+| `full` | Complete reference, product, composition, skin, lighting, and depth-of-field modules |
+| `review` or `analyze` | Verdict, primary issues, and targeted replacement copy |
+| `regenerate prompt` | Revised text prompt only; no image generation |
+
+### Design principles
+
+- Product accuracy takes priority over photographic style
+- Apply only constraints relevant to the current category and failure mode
+- Never infer absolute dimensions or hidden structures from unavailable evidence
+- Explicit user direction overrides the default warm, low-key style
+- Prefer localized corrections over full prompt rewrites
+
+### Scope and limitations
+
+- Prompting cannot guarantee exact reconstruction of complex jewelry structures
+- For precise on-body scale, provide a wearing reference or millimeter dimensions
+- The Skill does not fabricate test reports, material claims, gemstone certificates, or platform endorsements
+- It does not replace official Etsy, Google, or marketplace policies
+
+### License
+
+[MIT License](LICENSE)
+
+This project is not affiliated with, sponsored by, or endorsed by Etsy, Google, or Gemini. These names are used solely to describe compatible workflows and intended use cases.
